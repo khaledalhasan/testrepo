@@ -4,7 +4,7 @@ pipeline {
   stages {
     stage('Hello') {
       steps {
-        ansiblePlaybook colorized: true, credentialsId: 'ssh', disableHostKeyChecking: true, installation: 'built-in', inventory: 'inventory.ini', playbook: 'test-playbook.yml'
+        ansiblePlaybook colorized: true, credentialsId: 'ssh', disableHostKeyChecking: true, installation: 'built-in', playbook: 'test-playbook.yml'
       }
     }
   }
