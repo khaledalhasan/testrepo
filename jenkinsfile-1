@@ -3,6 +3,11 @@ pipeline {
 
   stages {
     stage('Hello') {
+    
+    git branch: 'main', url: 'https://github.com/khaledalhasan/testrepo'
+    
+    }
+    stage('Hello') {
       steps {
         withCredentials(
             [[
