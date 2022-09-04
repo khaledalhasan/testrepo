@@ -4,7 +4,13 @@ pipeline {
   stages {
     stage('Hello') {
       steps {
-        withCredentials(string(credentialsId: 'aws', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')) {
+        withCredentials(
+            [[
+                $class: 'AmazonWebServicesCredentialsBinding',
+                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                credentialsId: 'aws',  // ID of credentials in Jenkins
+                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+            ]]) {
         ansiblePlaybook colorized: true, credentialsId: 'ssh', disableHostKeyChecking: true, installation: 'built-in', playbook: 'test-playbook.yml'
         }
       }
