@@ -4,11 +4,7 @@ pipeline {
   stages {
     stage('Hello') {
       steps {
-        sh '''
-          ansible --version
-          ansible-playbook --version
-          ansible-galaxy --version
-        '''
+        ansiblePlaybook colorized: true, credentialsId: 'ssh', disableHostKeyChecking: true, installation: 'built-in', inventory: 'inventory.ini', playbook: 'test-playbook.yml'
       }
     }
   }
