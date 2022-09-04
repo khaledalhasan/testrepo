@@ -1,7 +1,8 @@
 pipeline {
   agent { label 'master' }
-  stage('Build') {
+  stages {
         steps {
+            stage('Hello') {
             // Example AWS credentials
             withCredentials(
             [[
@@ -18,4 +19,5 @@ pipeline {
             }
         }
     }
+}
 }
