@@ -1,8 +1,12 @@
-- hosts: localhost
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
+---
+- hosts: all
   tasks:
-  - community.aws.aws_s3_bucket_info:
-    register: result
-  - debug:
-      msg: "{{ result }}"
+    - name: "S3 Pull - Ubunutu"
+      aws_s3:
+        bucket: "aws-codestar-us-west-2-543805437419"
+        object: "ubuntu.deb"
+        dest: "/tmp/ubuntu.deb"
+        mode: get
+      when: ansible_facts['os_family'] == "Debian"
+      vars:
+         ansible_python_interpreter: /usr/bin/python3
