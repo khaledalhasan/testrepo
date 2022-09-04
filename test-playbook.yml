@@ -1,14 +1,19 @@
 ---
 - hosts: all
   tasks:
-    - name: "S3 Pull - Ubunutu"
-      aws_s3:
-        aws_access_key: "AWS_ACCESS_KEY_ID"
-        aws_secret_key: "AWS_SECRET_ACCESS_KEY"
-        bucket: "aws-codestar-us-west-2-543805437419"
-        object: "ubuntu.deb"
-        dest: "/tmp/ubuntu.deb"
-        mode: get
-      when: ansible_facts['os_family'] == "Debian"
-      vars:
-         ansible_python_interpreter: /usr/bin/python3
+  - name: Create an empty bucket
+    amazon.aws.aws_s3:
+      bucket: mybucket
+      mode: create
+      permission: public-read
+  - name: "S3 Pull - Ubunutu"
+    aws_s3:
+      aws_access_key: "AWS_ACCESS_KEY_ID"
+      aws_secret_key: "AWS_SECRET_ACCESS_KEY"
+      bucket: "aws-codestar-us-west-2-543805437419"
+      object: "ubuntu.deb"
+      dest: "/tmp/ubuntu.deb"
+      mode: get
+    when: ansible_facts['os_family'] == "Debian"
+    vars:
+       ansible_python_interpreter: /usr/bin/python3
