@@ -1,5 +1,5 @@
 node {
-    withCredentials([string(credentialsId: 'foo', variable: 'secret')]) {
+    withCredentials([string(credentialsId: 'aws', variable: 'secret')]) {
         script {
             def creds = readJSON text: secret
             env.AWS_ACCESS_KEY_ID = creds['accessKeyId']
