@@ -1,11 +1,21 @@
-node {
-    withCredentials([string(credentialsId: 'aws', variable: 'secret')]) {
-        script {
-            def creds = readJSON text: secret
-            env.AWS_ACCESS_KEY_ID = creds['accessKeyId']
-            env.AWS_SECRET_ACCESS_KEY = creds['secretAccessKey']
-            env.AWS_REGION = 'us-east-1' // or whatever
+pipeline {
+  agent { label 'master' }
+  stage('Build') {
+        steps {
+            // Example AWS credentials
+            withCredentials(
+            [[
+                $class: 'AmazonWebServicesCredentialsBinding',
+                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                credentialsId: 'aws',  // ID of credentials in Jenkins
+                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+            ]]) {
+                echo "Listing contents of an S3 bucket."
+                sh "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
+                    AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
+                    AWS_REGION=us-east-1 \
+                    aws s3 ls"
+            }
         }
-        sh "aws sts get-caller-identity" // or whatever
     }
 }
